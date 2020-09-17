@@ -14,6 +14,27 @@
 #endif
 
 #ifndef FLIP_HALF
+
+#define LAYOUT_CRKBD_LIKE( \
+    L10, L11, L12, L13, L14, L15,             R11, R12, R13, R14, R15, R16, \
+    L20, L21, L22, L23, L24, L25,             R21, R22, R23, R24, R25, R26, \
+    L30, L31, L32, L33, L34, L35,             R31, R32, R33, R34, R35, R36, \
+                        L43, L44, L45,   R41, R42, R43                      \
+    ) \
+    { \
+        { KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO }, \
+        { KC_NO, L11, L12, L13, L14, L15, KC_NO }, \
+        { L20, L21, L22, L23, L24, L25, KC_NO }, \
+        { L30, L31, L32, L33, L34, L35, KC_NO }, \
+        { KC_NO, KC_NO, KC_NO, L43, L44, L45, KC_NO }, \
+        { KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO }, \
+        { R16, R15, R14, R13, R12, R11, KC_NO }, \
+        { R26, R25, R24, R23, R22, R21, KC_NO }, \
+        { R36, R35, R34, R33, R32, R31, KC_NO }, \
+        { KC_NO, KC_NO, KC_NO, R43, R42, R41, KC_NO }  \
+    }
+
+
 // Standard Keymap
 // (TRRS jack on the left half is to the right, TRRS jack on the right half is to the left)
 #define LAYOUT_4key( \
