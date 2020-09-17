@@ -23,7 +23,7 @@
     ) \
     { \
         { KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO }, \
-        { KC_NO, L11, L12, L13, L14, L15, KC_NO }, \
+        { L10, L11, L12, L13, L14, L15, KC_NO }, \
         { L20, L21, L22, L23, L24, L25, KC_NO }, \
         { L30, L31, L32, L33, L34, L35, KC_NO }, \
         { KC_NO, KC_NO, KC_NO, L43, L44, L45, KC_NO }, \
