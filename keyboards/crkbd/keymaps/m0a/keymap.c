@@ -42,22 +42,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           KC_LGUI, RAISE,  KC_SPC,     KC_ENT,  LOWER,  KC_RALT \
                                       //`--------------------------'  `--------------------------'
   ),
-
-
-
-  [_LOWER] = LAYOUT_split_3x6_3( \
+ [_RAISE] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       KC_TILD, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,  KC_PERC,                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  KC_MINS,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL,  KC_NO,  KC_UP,   KC_NO,    KC_NO,    KC_NO,                     KC_PPLS,  KC_EQL,  KC_LCBR, KC_RCBR, KC_COLN, KC_DQT,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, KC_LEFT, KC_DOWN,KC_RIGHT,  KC_NO,    KC_NO,                     KC_PIPE,  KC_GRV,  KC_LBRC, KC_RBRC, KC_QUES, KC_RSFT,\
+      KC_LSFT, KC_LEFT, KC_DOWN,KC_RIGHT,  KC_NO,    KC_NO,                     KC_PIPE,  KC_GRV,  KC_LBRC, KC_RBRC, KC_QUES, KC_BSLS,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                         KC_TRNS,   KC_TRNS,  KC_TRNS,     KC_TRNS,  KC_TRNS,  KC_TRNS \
                                       //`--------------------------'  `--------------------------'
     ),
-
-  [_RAISE] = LAYOUT_split_3x6_3( \
+  [_LOWER] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       KC_ESC,  KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -157,6 +153,10 @@ void iota_gfx_task_user(void) {
 }
 #endif//SSD1306OLED
 
+
+static bool lower_pressed = false;
+static bool raise_pressed = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
 #ifdef SSD1306OLED
@@ -173,20 +173,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case LOWER:
       if (record->event.pressed) {
+        lower_pressed = true;
         layer_on(_LOWER);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       } else {
         layer_off(_LOWER);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        if (lower_pressed) {
+          register_code(KC_LANG2);
+          unregister_code(KC_LANG2);
+        }
+        lower_pressed = false;
       }
       return false;
     case RAISE:
       if (record->event.pressed) {
+        raise_pressed = true;
         layer_on(_RAISE);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       } else {
         layer_off(_RAISE);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+        if (raise_pressed) {
+          register_code(KC_LANG1);
+          unregister_code(KC_LANG1);
+        }
+        raise_pressed = false;
       }
       return false;
     case ADJUST:
