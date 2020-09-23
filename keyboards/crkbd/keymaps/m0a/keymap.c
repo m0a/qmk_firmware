@@ -209,7 +209,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (lower_pressed) {
         //   register_code(KC_LANG2);
         //   unregister_code(KC_LANG2);
-        nicola_off();
+            nicola_off();
         }
         lower_pressed = false;
       }
@@ -225,7 +225,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (raise_pressed) {
         //   register_code(KC_LANG1);
         //   unregister_code(KC_LANG1);
-        nicola_on();
+            nicola_on();
         }
         raise_pressed = false;
       }
