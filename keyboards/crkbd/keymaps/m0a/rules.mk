@@ -9,3 +9,10 @@ SRC +=  ./lib/glcdfont.c \
         # ./lib/mode_icon_reader.c \
         # ./lib/host_led_state_reader.c \
         # ./lib/timelogger.c \
+
+OLED_DRIVER_ENABLE = yes
+# RGBLIGHT_ENABLE = no
+RGB_MATRIX_ENABLE = WS2812
+
+# if firmware size over limit, try this option
+CFLAGS += -flto
