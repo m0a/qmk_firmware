@@ -239,7 +239,6 @@ const PROGMEM nicola_keymap ngmap[] = {
 void set_nicola(uint8_t layer) {
   nicola_layer = layer;
 }
-
 // 親指シフトをオンオフ
 void nicola_on(void) {
   is_nicola = true;
