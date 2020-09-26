@@ -1,3 +1,4 @@
+
 #include QMK_KEYBOARD_H
 
 
@@ -31,7 +32,6 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
-  NICOLA,
   BACKLIT,
   RGBRST
 };
@@ -39,6 +39,7 @@ enum custom_keycodes {
 enum macro_keycodes {
   KC_SAMPLEMACRO,
 };
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_split_3x6_3( \
@@ -49,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, RAISE,  KC_SPC,     KC_ENT,  LOWER,  KC_RALT \
+                                          KC_LALT, KC_LGUI, RAISE,      LOWER,  KC_RGUI,  KC_RALT \
                                       //`--------------------------'  `--------------------------'
   ),
  [_RAISE] = LAYOUT_split_3x6_3( \
@@ -85,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       KC_LEFT,  NG_Z,  NG_X,  NG_C,  NG_V,  NG_B,                   NG_N,  NG_M,NG_COMM,NG_DOT,NG_SLSH, KC_RIGHT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                  RAISE,NG_SHFTL, KC_TRNS,   KC_TRNS,NG_SHFTR, LOWER \
+                                KC_LALT,NG_SHFTL,KC_SPC, KC_ENT,NG_SHFTR, KC_RALT \
                               //`--------------------'  `--------------------'
   ),
 // NICOLA親指シフト
@@ -97,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_SLEP,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,   LOWER,  KC_SPC,     KC_ENT,   RAISE, KC_RALT \
+                                          KC_LALT, KC_LGUI, RAISE,      LOWER,  KC_RGUI,  KC_RALT \
                                       //`--------------------------'  `--------------------------'
   )
 };
@@ -183,6 +184,9 @@ void iota_gfx_task_user(void) {
 
 static bool lower_pressed = false;
 static bool raise_pressed = false;
+static bool rgui_pressed = false;
+static bool lgui_pressed = false;
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef CONSOLE_ENABLE
@@ -197,6 +201,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
+    case KC_LALT:
+      if (record->event.pressed) {
+        lgui_pressed = true;
+        register_code(KC_LALT);
+      } else {
+        unregister_code(KC_LALT);
+        if (lgui_pressed) {
+            nicola_on();
+        }
+        lgui_pressed = false;
+      }
+      return false;
+    case KC_RALT:
+      if (record->event.pressed) {
+        rgui_pressed = true;
+        register_code(KC_RALT);
+      } else {
+        unregister_code(KC_RALT);
+        if (rgui_pressed) {
+            nicola_off();
+        }
+        rgui_pressed = false;
+      }
+      return false;
     case QWERTY:
       if (record->event.pressed) {
         persistent_default_layer_set(1UL<<_QWERTY);
@@ -211,9 +239,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_LOWER);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
         if (lower_pressed) {
-        //   register_code(KC_LANG2);
-        //   unregister_code(KC_LANG2);
-            nicola_off();
+            tap_code(KC_ENT);
+
         }
         lower_pressed = false;
       }
@@ -227,9 +254,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_RAISE);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
         if (raise_pressed) {
-        //   register_code(KC_LANG1);
-        //   unregister_code(KC_LANG1);
-            nicola_on();
+            tap_code(KC_SPC);
         }
         raise_pressed = false;
       }
@@ -264,6 +289,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // reset the flag
         lower_pressed = false;
         raise_pressed = false;
+        lgui_pressed = false;
+        rgui_pressed = false;
       }
       break;
   }

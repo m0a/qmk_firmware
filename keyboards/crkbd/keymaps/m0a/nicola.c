@@ -241,6 +241,9 @@ void set_nicola(uint8_t layer) {
 }
 // 親指シフトをオンオフ
 void nicola_on(void) {
+#ifdef CONSOLE_ENABLE
+    uprintf("nicola on\n");
+#endif
   is_nicola = true;
   keycomb = 0UL;
   nicola_clear();
@@ -251,6 +254,9 @@ void nicola_on(void) {
 }
 
 void nicola_off(void) {
+#ifdef CONSOLE_ENABLE
+    uprintf("nicola off\n");
+#endif
   is_nicola = false;
   keycomb = 0UL;
   nicola_clear();
