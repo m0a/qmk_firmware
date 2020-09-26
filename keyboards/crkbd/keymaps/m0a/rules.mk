@@ -10,9 +10,10 @@ SRC +=  ./lib/glcdfont.c \
         # ./lib/host_led_state_reader.c \
         # ./lib/timelogger.c \
 
-OLED_DRIVER_ENABLE = yes
-# RGBLIGHT_ENABLE = no
+# OLED_DRIVER_ENABLE = yes
+RGBLIGHT_ENABLE = no
 RGB_MATRIX_ENABLE = WS2812
+# CONSOLE_ENABLE = yes
 
 # if firmware size over limit, try this option
 CFLAGS += -flto
