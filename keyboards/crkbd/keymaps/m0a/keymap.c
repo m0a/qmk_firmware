@@ -75,7 +75,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                         KC_TRNS,   KC_TRNS,  KC_LALT,     KC_TRNS,  KC_TRNS,  KC_TRNS \
                                       //`--------------------------'  `--------------------------'
   ),
-
 // NICOLA親指シフト
   // デフォルトレイヤーに関係なくQWERTYで
   [_NICOLA] = LAYOUT_split_3x6_3( \
@@ -86,10 +85,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+------+------+------+------+------|                |------+------+------+------+------+------|
       KC_LEFT,  NG_Z,  NG_X,  NG_C,  NG_V,  NG_B,                   NG_N,  NG_M,NG_COMM,NG_DOT,NG_SLSH, KC_RIGHT,\
   //|------+------+------+------+------+------+------|  |------+------+------+------+------+------+------|
-                                KC_LALT,NG_SHFTL,KC_SPC, KC_ENT,NG_SHFTR, KC_RALT \
+                                KC_LALT,NG_SHFTL,RAISE, LOWER,NG_SHFTR, KC_RALT \
                               //`--------------------'  `--------------------'
   ),
 // NICOLA親指シフト
+
   [_ADJUST] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
         RESET,  RGBRST, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
@@ -184,8 +184,8 @@ void iota_gfx_task_user(void) {
 
 static bool lower_pressed = false;
 static bool raise_pressed = false;
-static bool rgui_pressed = false;
-static bool lgui_pressed = false;
+static bool ralt_pressed = false;
+static bool lalt_pressed = false;
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -203,26 +203,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_LALT:
       if (record->event.pressed) {
-        lgui_pressed = true;
+        lalt_pressed = true;
         register_code(KC_LALT);
       } else {
         unregister_code(KC_LALT);
-        if (lgui_pressed) {
-            nicola_on();
+        if (lalt_pressed) {
+            nicola_off();
         }
-        lgui_pressed = false;
+        lalt_pressed = false;
       }
       return false;
     case KC_RALT:
       if (record->event.pressed) {
-        rgui_pressed = true;
+        ralt_pressed = true;
         register_code(KC_RALT);
       } else {
         unregister_code(KC_RALT);
-        if (rgui_pressed) {
-            nicola_off();
+        if (ralt_pressed) {
+            nicola_on();
         }
-        rgui_pressed = false;
+        ralt_pressed = false;
       }
       return false;
     case QWERTY:
@@ -289,8 +289,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // reset the flag
         lower_pressed = false;
         raise_pressed = false;
-        lgui_pressed = false;
-        rgui_pressed = false;
+        lalt_pressed = false;
+        ralt_pressed = false;
       }
       break;
   }
