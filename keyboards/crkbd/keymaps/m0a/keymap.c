@@ -55,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
  [_RAISE] = LAYOUT_split_3x6_3( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      KC_TILD, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,  KC_PERC,                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  KC_MINS,\
+      KC_TILD, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,  KC_PERC,                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  KC_BSPC,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL,  KC_NO,  KC_UP,   KC_NO,    KC_NO,    KC_NO,                     KC_PPLS,  KC_EQL,  KC_LCBR, KC_RCBR, KC_COLN, KC_DQT,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -72,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT, KC_F6,   KC_F7,  KC_F8,   KC_F9,   KC_F10,                        KC_F11, KC_F12,  KC_NO,   KC_NO,    KC_NO,  KC_RSFT,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                        KC_TRNS,   KC_TRNS,  KC_LALT,     KC_TRNS,  KC_TRNS,  KC_TRNS \
+                                        KC_TRNS,   KC_TRNS,  KC_TRNS,     KC_TRNS,  KC_TRNS,  KC_TRNS \
                                       //`--------------------------'  `--------------------------'
   ),
 // NICOLA親指シフト
