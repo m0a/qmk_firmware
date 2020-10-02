@@ -186,7 +186,7 @@ static bool lower_pressed = false;
 static bool raise_pressed = false;
 static bool ralt_pressed = false;
 static bool lalt_pressed = false;
-
+static bool shift_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef CONSOLE_ENABLE
@@ -201,6 +201,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
+    case KC_LSFT:
+      if (record->event.pressed) {
+        if (shift_pressed) {
+            tap_code(KC_CAPS);
+            return false;
+        }
+        shift_pressed = true;
+        register_code(KC_LSFT);
+      } else {
+        unregister_code(KC_LSFT);
+        shift_pressed = false;
+      }
+      return false;
+    case KC_RSFT:
+      if (record->event.pressed) {
+        if (shift_pressed) {
+            tap_code(KC_CAPS);
+            return false;
+        }
+        shift_pressed = true;
+        register_code(KC_RSFT);
+      } else {
+        unregister_code(KC_RSFT);
+        shift_pressed = false;
+      }
+      return false;
     case KC_LALT:
       if (record->event.pressed) {
         lalt_pressed = true;
@@ -291,6 +317,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         raise_pressed = false;
         lalt_pressed = false;
         ralt_pressed = false;
+        shift_pressed = false;
       }
       break;
   }
