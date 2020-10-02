@@ -187,6 +187,9 @@ static bool raise_pressed = false;
 static bool ralt_pressed = false;
 static bool lalt_pressed = false;
 static bool shift_pressed = false;
+static bool cmd_pressed = false;
+static bool cmd_w_pressed = false;
+// static bool cmd_q_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef CONSOLE_ENABLE
@@ -201,6 +204,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
+    case KC_W:
+      if (record->event.pressed) {
+          if (cmd_pressed) {
+              return false;
+          }
+      } else {
+         if (cmd_w_pressed) {
+            tap_code(keycode);
+            cmd_w_pressed = false;
+            return false;
+         }
+
+         if (cmd_pressed) {
+              cmd_w_pressed = true;
+              return false;
+          }
+      }
+      cmd_w_pressed = false;
+      return true;
+
+    case KC_LGUI:
+    case KC_RGUI:
+      if (record->event.pressed) {
+        cmd_pressed = true;
+      } else {
+        cmd_pressed = false;
+      }
+      return true;
     case KC_LSFT:
       if (record->event.pressed) {
         if (shift_pressed) {
@@ -318,6 +349,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         lalt_pressed = false;
         ralt_pressed = false;
         shift_pressed = false;
+        cmd_w_pressed= false;
       }
       break;
   }
