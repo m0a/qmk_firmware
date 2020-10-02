@@ -243,18 +243,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return true;
     case KC_LSFT:
-      if (record->event.pressed) {
-        if (shift_pressed) {
-            tap_code(KC_CAPS);
-            return false;
-        }
-        shift_pressed = true;
-        register_code(KC_LSFT);
-      } else {
-        unregister_code(KC_LSFT);
-        shift_pressed = false;
-      }
-      return false;
     case KC_RSFT:
       if (record->event.pressed) {
         if (shift_pressed) {
@@ -262,12 +250,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         }
         shift_pressed = true;
-        register_code(KC_RSFT);
+        register_code(keycode);
       } else {
-        unregister_code(KC_RSFT);
+        unregister_code(keycode);
         shift_pressed = false;
       }
       return false;
+
     case KC_LALT:
       if (record->event.pressed) {
         lalt_pressed = true;
