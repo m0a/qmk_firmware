@@ -11,8 +11,8 @@ SRC +=  ./lib/glcdfont.c \
         # ./lib/timelogger.c \
 
 # OLED_DRIVER_ENABLE = yes
-RGBLIGHT_ENABLE = no
-RGB_MATRIX_ENABLE = WS2812
+RGBLIGHT_ENABLE = yes
+# RGB_MATRIX_ENABLE = WS2812
 # CONSOLE_ENABLE = yes
 
 # if firmware size over limit, try this option
