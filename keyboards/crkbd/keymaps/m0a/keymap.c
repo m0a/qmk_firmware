@@ -189,7 +189,30 @@ static bool lalt_pressed = false;
 static bool shift_pressed = false;
 static bool cmd_pressed = false;
 static bool cmd_w_pressed = false;
-// static bool cmd_q_pressed = false;
+static bool cmd_q_pressed = false;
+static bool cmd_h_pressed = false;
+
+// cmdキーとの組み合わせ動作に対する規定処理
+bool process_cmd_with_key(uint16_t keycode, keyrecord_t *record, bool *cmd_x_pressed){
+    if (record->event.pressed) {
+          if (cmd_pressed) {
+              return false;
+          }
+      } else {
+         if (*cmd_x_pressed) {
+            tap_code(keycode);
+            *cmd_x_pressed = false;
+            return false;
+         }
+
+         if (cmd_pressed) {
+              *cmd_x_pressed = true;
+              return false;
+          }
+      }
+      *cmd_x_pressed = false;
+      return true;
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef CONSOLE_ENABLE
@@ -205,24 +228,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
     case KC_W:
-      if (record->event.pressed) {
-          if (cmd_pressed) {
-              return false;
-          }
-      } else {
-         if (cmd_w_pressed) {
-            tap_code(keycode);
-            cmd_w_pressed = false;
-            return false;
-         }
-
-         if (cmd_pressed) {
-              cmd_w_pressed = true;
-              return false;
-          }
-      }
-      cmd_w_pressed = false;
-      return true;
+      return process_cmd_with_key(keycode,record,&cmd_w_pressed);
+    case KC_Q:
+      return process_cmd_with_key(keycode,record,&cmd_q_pressed);
+    case KC_H:
+      return process_cmd_with_key(keycode,record,&cmd_h_pressed);
 
     case KC_LGUI:
     case KC_RGUI:
@@ -349,7 +359,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         lalt_pressed = false;
         ralt_pressed = false;
         shift_pressed = false;
-        cmd_w_pressed= false;
+
+        cmd_w_pressed = false;
+        cmd_q_pressed = false;
+        cmd_h_pressed = false;
       }
       break;
   }
